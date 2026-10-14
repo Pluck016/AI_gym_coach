@@ -20,9 +20,9 @@ class LLMCoach:
         ]
 
         response = self.client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+            model="llama-3.1-8b-instant",
             messages=messages,
-            temperature=0.4
+            temperature=0.4,
         )
 
         text = response.choices[0].message.content.strip()
