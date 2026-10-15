@@ -1,8 +1,10 @@
 import sqlite3
 import streamlit as st
 from pathlib import Path
+import os
 
-_DB_PATH = str(Path(__file__).parent.parent.parent / "data.db")
+# Use /tmp so it is fully writable on Streamlit Cloud
+_DB_PATH = os.path.join("/tmp", "data.db")
 
 
 @st.cache_resource
