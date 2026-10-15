@@ -197,35 +197,29 @@ def main():
             unsafe_allow_html=True,
         )
     else:
-        # context = webrtc_streamer(
-        #     key="exercise-analysis",
-        #     mode=WebRtcMode.SENDRECV,
-        #     video_processor_factory=VideoProcessorClass,
-        #     rtc_configuration={
-        #         "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
-        #     },
-        #     media_stream_constraints={
-        #         "video": True,
-        #         "audio": False,
-        #     },
-        #     async_processing=True
-        # )
-
-        
-
-        # Inside your main() function:
-        rtc_config = RTCConfiguration(
-            {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
-        )
-
         context = webrtc_streamer(
             key="exercise-analysis",
             mode=WebRtcMode.SENDRECV,
             video_processor_factory=VideoProcessorClass,
-            rtc_configuration=rtc_config,
-            media_stream_constraints={"video": True, "audio": False},
+            rtc_configuration={
+                "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]},
+                               {
+                                   "urls": [st.secrets["turn:global.turn.twilio.com:3478?transport=udp"]],
+                                   "username": st.secrets["AC4e9620be9d60ebf0a640de9701c16b91"],
+                                   "credential":st.secrets["078c337c5da957d6d06a8f27ca41c375"],
+                               }]
+            },
+            media_stream_constraints={
+                "video": True,
+                "audio": False,
+            },
             async_processing=True
         )
+
+        
+
+      
+        
 
         sync_metrics_update(context)
 
