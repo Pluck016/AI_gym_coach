@@ -7,7 +7,7 @@ from services.state.session_defaults import initial_session_defaults
 from services.config.workout_config import EXERCISE_OPTIONS
 from services.ui.style_loader import load_css, inject_local_font, inject_webrtc_styles
 from services.persistence.exercise_repository import init_db
-from streamlit_webrtc import webrtc_streamer, WebRtcMode
+from streamlit_webrtc import webrtc_streamer, WebRtcMode, RTCConfiguration
 from services.vision.exercise_video_processor import VideoProcessorClass
 from services.tracking.metrics import sync_metrics_update
 from services.persistence.exercise_repository import get_users_exercises
@@ -197,17 +197,33 @@ def main():
             unsafe_allow_html=True,
         )
     else:
+        # context = webrtc_streamer(
+        #     key="exercise-analysis",
+        #     mode=WebRtcMode.SENDRECV,
+        #     video_processor_factory=VideoProcessorClass,
+        #     rtc_configuration={
+        #         "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+        #     },
+        #     media_stream_constraints={
+        #         "video": True,
+        #         "audio": False,
+        #     },
+        #     async_processing=True
+        # )
+
+        
+
+        # Inside your main() function:
+        rtc_config = RTCConfiguration(
+            {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]}
+        )
+
         context = webrtc_streamer(
             key="exercise-analysis",
             mode=WebRtcMode.SENDRECV,
             video_processor_factory=VideoProcessorClass,
-            rtc_configuration={
-                "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
-            },
-            media_stream_constraints={
-                "video": True,
-                "audio": False,
-            },
+            rtc_configuration=rtc_config,
+            media_stream_constraints={"video": True, "audio": False},
             async_processing=True
         )
 
